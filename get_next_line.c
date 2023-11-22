@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/22 13:47:31 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/22 15:57:56 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	*get_line(int fd, char **buffer, size_t size, int init)
 	else
 		line = get_line(fd, buffer, size + len, 0);
 	if (line)
-		while (len-- >= 0)
+		while (len-- > 0)
 			line[size + len] = buffer[len];
 	return (line);
 }
