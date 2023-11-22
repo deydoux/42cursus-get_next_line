@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/22 10:01:07 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/22 13:47:31 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*init_line(size_t size)
 static char	*get_line(int fd, char **buffer, size_t size, int init)
 {
 	size_t	len;
-	size_t	buffer_len;
+	ssize_t	buffer_len;
 	char	*line;
 
 	len = 0;
@@ -50,16 +50,19 @@ static char	*get_line(int fd, char **buffer, size_t size, int init)
 		buffer_len = init_buffer(buffer);
 	else
 		buffer_len = read(fd, *buffer, BUFFER_SIZE);
+	if (buffer_len < 0)
+		return (NULL);
 	if (buffer_len < BUFFER_SIZE)
 		*buffer[buffer_len] = 0;
 	while (len < buffer_len && *buffer[len] && *buffer[len] != '\n')
 		len++;
-	if (!*buffer[len] && *buffer[len] == '\n')
+	if (!(buffer_len || init) || !*buffer[len] || *buffer[len] == '\n')
 		line = init_line(size + len);
 	else
 		line = get_line(fd, buffer, size + len, 0);
-	while (len-- >= 0)
-		line[size + len] = buffer[len];
+	if (line)
+		while (len-- >= 0)
+			line[size + len] = buffer[len];
 	return (line);
 }
 
