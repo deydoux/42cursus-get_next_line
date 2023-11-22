@@ -6,32 +6,60 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/21 17:39:55 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/22 01:17:32 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*get_start(char *buffer)
+static size_t	init_buffer(char **buffer)
 {
-	size_t	buffer_len;
-	char	*start;
+	size_t	start;
+	size_t	len;
 
-	while (buffer[buffer_len] && buffer[buffer_len] != '\n')
-		buffer++;
-	return (start);
+	start = 0;
+	while (start < BUFFER_SIZE && *buffer[start] != '\n')
+		start++;
+	while (start + len < BUFFER_SIZE)
+	{
+		buffer[len] = buffer[start + len];
+		len++;
+	}
+	return (len);
+}
+
+static int	find_newline(const char *s)
+{
+	size_t	len;
+
+	while (len < BUFFER_SIZE && s[len] != '\n')
+		len++;
+	return (s[len] == '\n');
+}
+
+static char	*get_line(char **buffer, size_t size, int init)
+{
+	size_t	len;
+	char	*line;
+
+	if (init)
+		len = init_buffer(buffer);
+	if (find_newline(*buffer))
+	{
+		while (buffer[len] != '\n')
+			len--;
+		line = malloc(sizeof(char) * (size + len + 1));
+		line[size + len] = 0;
+	}
+
 }
 
 char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE];
-	char		*start;
 	char		*line;
-	size_t		line_len;
 
 	if (fd < 1 || BUFFER_SIZE < 1)
 		return (NULL);
-	start = get_start(buffer);
-	line_len = 0;
-	return (line);
+	return (get_line(&buffer, 0, 1));
 }
