@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/24 16:06:15 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/24 18:03:22 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static char	*create_line(int fd, char *stash, size_t size)
 	{
 		ft_memcpy(stash, buffer, BUFFER_SIZE);
 		line = malloc(sizeof(char) * (size + len + 1));
+		line[size + len] = 0;
 	}
 	else
 		line = create_line(fd, stash, size + len);
