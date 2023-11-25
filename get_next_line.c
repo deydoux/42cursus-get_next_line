@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/24 18:03:22 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/25 15:51:22 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static size_t	init_buffer(char *buffer, char *stash)
 			buffer[len] = stash[start + len];
 			len++;
 		}
+		if (stash[start + len] == '\n')
+			buffer[len++] = '\n';
 	}
 	return (len);
 }
@@ -39,6 +41,7 @@ static char	*create_line(int fd, char *stash, size_t size)
 	char	*line;
 
 	len = 0;
+	line = NULL;
 	if (!size)
 		len = init_buffer(buffer, stash);
 	if (!len)
@@ -50,14 +53,14 @@ static char	*create_line(int fd, char *stash, size_t size)
 	while (buffer[len] && buffer[len] != '\n')
 		len++;
 	len += buffer[len] == '\n';
-	if ((size && len < BUFFER_SIZE && !buffer[len]) || buffer[len - 1] == '\n')
+	if (buffer[len - 1] != '\n')
+		line = create_line(fd, stash, size + len);
+	if (!line)
 	{
 		ft_memcpy(stash, buffer, BUFFER_SIZE);
 		line = malloc(sizeof(char) * (size + len + 1));
 		line[size + len] = 0;
 	}
-	else
-		line = create_line(fd, stash, size + len);
 	if (line)
 		while (len--)
 			line[size + len] = buffer[len];
