@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/25 15:51:22 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/26 16:16:40 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,11 @@ static size_t	init_buffer(char *buffer, char *stash)
 		start++;
 	if (stash[start++] == '\n')
 	{
-		while (stash[start + len] && stash[start + len] != '\n')
+		while (stash[start + len])
 		{
 			buffer[len] = stash[start + len];
 			len++;
 		}
-		if (stash[start + len] == '\n')
-			buffer[len++] = '\n';
 	}
 	return (len);
 }
