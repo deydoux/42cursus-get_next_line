@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/27 13:02:41 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/27 13:06:59 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ static char	*create_line(int fd, char *stash, size_t size)
 			line[size + len] = 0;
 	}
 	if (line)
-		while (len--)
-			line[size + len] = buffer[len];
+		ft_memcpy(line + size, buffer, len);
 	return (line);
 }
 
