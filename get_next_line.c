@@ -6,13 +6,13 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/27 13:06:59 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/27 13:20:37 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static size_t	init_buffer(char *buffer, char *stash)
+static size_t	read_stash(char *stash, char *buffer)
 {
 	size_t	start;
 	size_t	len;
@@ -41,7 +41,7 @@ static char	*create_line(int fd, char *stash, size_t size)
 	len = 0;
 	line = NULL;
 	if (!size)
-		len = init_buffer(buffer, stash);
+		len = read_stash(stash, buffer);
 	if (!len)
 		len = read(fd, buffer, BUFFER_SIZE);
 	if (len <= 0)
