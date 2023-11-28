@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/28 13:11:06 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/28 17:24:46 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,23 @@ static size_t	read_stash(char *stash, char *buffer)
 static char	*create_line(int fd, char *stash, size_t line_len)
 {
 	ssize_t	buffer_len;
-	char	buffer[BUFFER_SIZE + 1];
+	char	*buffer;
 	char	*line;
 
 	buffer_len = 0;
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	line = NULL;
+	if (!buffer)
+		return (NULL);
 	if (!line_len)
 		buffer_len = read_stash(stash, buffer);
 	if (!buffer_len)
 		buffer_len = read(fd, buffer, BUFFER_SIZE);
 	if (buffer_len <= 0)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	buffer[buffer_len] = 0;
 	buffer_len = 0;
 	while (buffer[buffer_len] && buffer[buffer_len] != '\n')
@@ -62,6 +68,7 @@ static char	*create_line(int fd, char *stash, size_t line_len)
 	}
 	if (line)
 		ft_memcpy(line + line_len, buffer, buffer_len);
+	free(buffer);
 	return (line);
 }
 
