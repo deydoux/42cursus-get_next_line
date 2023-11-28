@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/27 13:20:37 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/28 13:11:06 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,36 +32,36 @@ static size_t	read_stash(char *stash, char *buffer)
 	return (len);
 }
 
-static char	*create_line(int fd, char *stash, size_t size)
+static char	*create_line(int fd, char *stash, size_t line_len)
 {
-	ssize_t	len;
+	ssize_t	buffer_len;
 	char	buffer[BUFFER_SIZE + 1];
 	char	*line;
 
-	len = 0;
+	buffer_len = 0;
 	line = NULL;
-	if (!size)
-		len = read_stash(stash, buffer);
-	if (!len)
-		len = read(fd, buffer, BUFFER_SIZE);
-	if (len <= 0)
+	if (!line_len)
+		buffer_len = read_stash(stash, buffer);
+	if (!buffer_len)
+		buffer_len = read(fd, buffer, BUFFER_SIZE);
+	if (buffer_len <= 0)
 		return (NULL);
-	buffer[len] = 0;
-	len = 0;
-	while (buffer[len] && buffer[len] != '\n')
-		len++;
-	len += buffer[len] == '\n';
-	if (buffer[len - 1] != '\n')
-		line = create_line(fd, stash, size + len);
+	buffer[buffer_len] = 0;
+	buffer_len = 0;
+	while (buffer[buffer_len] && buffer[buffer_len] != '\n')
+		buffer_len++;
+	buffer_len += buffer[buffer_len] == '\n';
+	if (buffer[buffer_len - 1] != '\n')
+		line = create_line(fd, stash, line_len + buffer_len);
 	if (!line)
 	{
 		ft_memcpy(stash, buffer, BUFFER_SIZE);
-		line = malloc(sizeof(char) * (size + len + 1));
+		line = malloc(sizeof(char) * (line_len + buffer_len + 1));
 		if (line)
-			line[size + len] = 0;
+			line[line_len + buffer_len] = 0;
 	}
 	if (line)
-		ft_memcpy(line + size, buffer, len);
+		ft_memcpy(line + line_len, buffer, buffer_len);
 	return (line);
 }
 
