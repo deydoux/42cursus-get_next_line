@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/29 14:11:38 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/29 14:20:56 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,6 @@ char	*get_next_line(int fd)
 	error = 0;
 	line = create_line(fd, stash[fd], &error, 0);
 	if (error)
-		ft_bzero(stash, sizeof(stash));
+		ft_bzero(stash[fd], sizeof(stash[fd]));
 	return (line);
 }
