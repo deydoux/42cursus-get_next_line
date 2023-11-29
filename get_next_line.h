@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:03:40 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/24 14:13:26 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/29 10:06:12 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@
 
 char	*get_next_line(int fd);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
+void	*ft_bzero(void *s, size_t n);
 
 #endif

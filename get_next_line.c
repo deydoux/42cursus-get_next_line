@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/28 17:49:30 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/29 10:06:32 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static size_t	read_stash(char *stash, char *buffer)
 	return (len);
 }
 
-static char	*init_buffer(char *stash, int fd, int stash_readed)
+static char	*init_buffer(char *stash, int fd, int *error, int stash_readed)
 {
 	char	*buffer;
 	ssize_t	len;
@@ -45,7 +45,8 @@ static char	*init_buffer(char *stash, int fd, int stash_readed)
 		len = read_stash(stash, buffer);
 	if (!len)
 		len = read(fd, buffer, BUFFER_SIZE);
-	if (len <= 0)
+	*error = len < 0;
+	if (!len || *error)
 	{
 		free(buffer);
 		return (NULL);
@@ -54,13 +55,13 @@ static char	*init_buffer(char *stash, int fd, int stash_readed)
 	return (buffer);
 }
 
-static char	*create_line(int fd, char *stash, size_t line_len)
+static char	*create_line(int fd, char *stash, int *error, size_t line_len)
 {
 	char	*buffer;
 	char	*line;
 	size_t	buffer_len;
 
-	buffer = init_buffer(stash, fd, line_len != 0);
+	buffer = init_buffer(stash, fd, error, line_len != 0);
 	if (!buffer)
 		return (NULL);
 	line = NULL;
@@ -69,8 +70,8 @@ static char	*create_line(int fd, char *stash, size_t line_len)
 		buffer_len++;
 	buffer_len += buffer[buffer_len] == '\n';
 	if (buffer[buffer_len - 1] != '\n')
-		line = create_line(fd, stash, line_len + buffer_len);
-	if (!line)
+		line = create_line(fd, stash, error, line_len + buffer_len);
+	if (!line && !*error)
 	{
 		ft_memcpy(stash, buffer, BUFFER_SIZE);
 		line = malloc(sizeof(char) * (line_len + buffer_len + 1));
@@ -86,8 +87,14 @@ static char	*create_line(int fd, char *stash, size_t line_len)
 char	*get_next_line(int fd)
 {
 	static char	stash[BUFFER_SIZE + 1];
+	int			error;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	return (create_line(fd, stash, 0));
+	error = 0;
+	line = create_line(fd, stash, &error, 0);
+	if (error)
+		ft_bzero(stash, sizeof(stash));
+	return (line);
 }

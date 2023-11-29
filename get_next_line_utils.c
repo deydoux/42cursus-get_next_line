@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:12:24 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/24 14:13:15 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/29 10:06:09 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,14 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 		while (n--)
 			dest_ptr[n] = src_ptr[n];
 	return (dest);
+}
+
+void	*ft_bzero(void *s, size_t n)
+{
+	char	*ptr;
+
+	ptr = s;
+	while (n--)
+		ptr[n] = 0;
+	return (s);
 }
