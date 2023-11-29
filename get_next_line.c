@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/29 10:06:32 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/29 14:02:33 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ static char	*init_buffer(char *stash, int fd, int *error, int stash_readed)
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
+	{
+		*error = 1;
 		return (NULL);
+	}
 	len = 0;
 	if (!stash_readed)
 		len = read_stash(stash, buffer);
@@ -53,6 +56,19 @@ static char	*init_buffer(char *stash, int fd, int *error, int stash_readed)
 	}
 	buffer[len] = 0;
 	return (buffer);
+}
+
+static char	*init_line(size_t size, char *buffer, char *stash, int *error)
+{
+	char	*line;
+
+	ft_memcpy(stash, buffer, BUFFER_SIZE);
+	line = malloc(sizeof(char) * (size + 1));
+	if (line)
+		line[size] = 0;
+	else
+		*error = 1;
+	return (line);
 }
 
 static char	*create_line(int fd, char *stash, int *error, size_t line_len)
@@ -72,12 +88,7 @@ static char	*create_line(int fd, char *stash, int *error, size_t line_len)
 	if (buffer[buffer_len - 1] != '\n')
 		line = create_line(fd, stash, error, line_len + buffer_len);
 	if (!line && !*error)
-	{
-		ft_memcpy(stash, buffer, BUFFER_SIZE);
-		line = malloc(sizeof(char) * (line_len + buffer_len + 1));
-		if (line)
-			line[line_len + buffer_len] = 0;
-	}
+		line = init_line(line_len + buffer_len, buffer, stash, error);
 	if (line)
 		ft_memcpy(line + line_len, buffer, buffer_len);
 	free(buffer);
