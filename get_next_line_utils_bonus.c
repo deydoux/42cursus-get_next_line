@@ -6,11 +6,11 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:12:24 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/29 14:13:16 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/30 09:56:15 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {

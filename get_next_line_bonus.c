@@ -6,11 +6,11 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/29 14:20:56 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/30 09:55:56 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static size_t	read_stash(char *stash, char *buffer)
 {
