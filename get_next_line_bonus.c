@@ -6,7 +6,7 @@
 /*   By: deydoux <deydoux@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:02:10 by deydoux           #+#    #+#             */
-/*   Updated: 2023/11/30 10:10:43 by deydoux          ###   ########.fr       */
+/*   Updated: 2023/11/30 15:59:37 by deydoux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,11 @@ static char	*create_line(int fd, char *stash, int *error, size_t line_len)
 
 char	*get_next_line(int fd)
 {
-	static char	stash[__FD_SETSIZE][BUFFER_SIZE + 1];
+	static char	stash[FD_SETSIZE][BUFFER_SIZE + 1];
 	int			error;
 	char		*line;
 
-	if (BUFFER_SIZE < 1 || __FD_SETSIZE < fd || fd < 0)
+	if (BUFFER_SIZE < 1 || FD_SETSIZE < fd || fd < 0)
 		return (NULL);
 	error = 0;
 	line = create_line(fd, stash[fd], &error, 0);
